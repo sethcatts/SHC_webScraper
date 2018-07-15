@@ -6,7 +6,12 @@
 # TODO: Run daily
     #...?
 # TODO: Text alert to phone on new news reports about keywords supplied
-    #texting module?
+    # TODO: research texting module?
+# TODO: Create a robust site list and keyword list for testing
+    # TODO: Create keyword list
+    # TODO: Create site list
+    # TODO: Test lists for speed and accuracy
+
 import os
 import csv
 import time
