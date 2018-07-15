@@ -43,8 +43,9 @@ class Scraper:
             bfsp = BeautifulSoup(html, "html.parser")
             for tag in bfsp.find_all('a'):
                 url = tag.get('href')
-                if url and 'html' and self.keys[4] in url:
-                    self.returnedContent.append(self.sites[x] + url)
+                for y in range(len(self.keys)):
+                    if url and 'html' and self.keys[y] in url:
+                        self.returnedContent.append(self.sites[x] + url)
         print(self.returnedContent)
         saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
