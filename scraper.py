@@ -3,6 +3,10 @@
     # TODO: Add error checking for unfound file or an empty file/array
 # TODO: Save distinct reports
     # TODO: Date and Time - Complete
+    # TODO: Add text divide for each site for readability
+    # TODO: Add tags/details about why the article was added
+    # TODO: Collect headline for report as well as link
+        # TODO: This may have to be site specific depending on tags used
 # TODO: Run daily
     #...?
 # TODO: Text alert to phone on new news reports about keywords supplied
@@ -11,8 +15,8 @@
     # TODO: Create keyword list
     # TODO: Create site list
     # TODO: Test lists for speed and accuracy
-
-import os
+# TODO: Tweaks
+    # TODO: ...
 import csv
 import time
 import urllib.request
@@ -31,6 +35,7 @@ def getFileContents(filePath):
         r = csv.reader(f, delimiter = ",")
         for x in r:
             contentArray.append(x)
+    print("Created content array: ", contentArray)
     return contentArray[0]
 
 class Scraper:
