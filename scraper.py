@@ -17,6 +17,8 @@
     # TODO: Test lists for speed and accuracy
 # TODO: Tweaks
     # TODO: ...
+
+#Note to self: It is the year of our lord 2018, it's okay to add a forloops
 import csv
 import time
 import urllib.request
@@ -56,6 +58,6 @@ class Scraper:
                 for y in range(len(self.keys)):
                     if url and 'html' and self.keys[y] in url:
                         self.returnedContent.append(self.sites[x] + url)
-        print(self.returnedContent)
+        #print(self.returnedContent)
         saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
