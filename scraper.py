@@ -56,5 +56,7 @@ class Scraper:
                     if(self.keys[y] in str(text).lower()):
                         reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
                         self.returnedContent.append(reportPiece)
+    def _scrapeJobs(self):
+        # FIXME: 
 
-Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
+Scraper("craigslistURL.csv", "keywords.csv", "reports/").scrapeSites()
