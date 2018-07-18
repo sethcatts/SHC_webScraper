@@ -77,17 +77,19 @@ class Scraper:
                 #print(tag)
                 #regex to select the content inbetween HTML comments
                 #this is specific to yahoo finance because all their article titles are there by react means
+                link = tag.get('href')
                 text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
-                if(text != []):
+                if(text != [] and 'html' in link):
                     print(text)
-
+                    reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
+                    self.returnedContent.append(reportPiece)
                 #Make a variable equal to the value of the href subtag
                 #url = tag.get('href')
 
                 #for all keys in the keyterm list
-                for y in range(len(self.keys)):
-                    pass
+                #for y in range(len(self.keys)):
+                    #pass
 
         #print(self.returnedContent)
-        #saveReport(self.returnedContent, self.reportPath)
+        saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
