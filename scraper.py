@@ -26,7 +26,7 @@
 #okay to add some forloops
 
 #Just not this many...
-
+import re
 import csv
 import time
 import urllib.request
@@ -74,19 +74,20 @@ class Scraper:
             #For all the link tagged parts of the object do x
             #find_all is returning an array of link tags to loop over
             for tag in bfsp.find_all('a'):
+                #print(tag)
+                #regex to select the content inbetween HTML comments
+                #this is specific to yahoo finance because all their article titles are there by react means
+                text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
+                if(text != []):
+                    print(text)
 
                 #Make a variable equal to the value of the href subtag
-                url = tag.get('href')
+                #url = tag.get('href')
+
                 #for all keys in the keyterm list
                 for y in range(len(self.keys)):
+                    pass
 
-                    #if the url is an actuall HTML doc and
-                    #contains a key it is added
-                    if url and 'html' and self.keys[y] in url:
-
-                        #Append the full url to the returnedContentArray
-                        #to be saved after all the requests have been made
-                        self.returnedContent.append(self.sites[x] + url)
-        print(self.returnedContent)
-        saveReport(self.returnedContent, self.reportPath)
+        #print(self.returnedContent)
+        #saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
