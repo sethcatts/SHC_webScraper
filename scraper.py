@@ -1,5 +1,4 @@
 # TODO: Allow for keywords in initalization of scraper
-    # TODO: Fix the way the array is returned in getKeywords function
     # TODO: Add error checking for unfound file or an empty file/array
 # TODO: Save distinct reports
     # TODO: Date and Time - Complete
@@ -15,10 +14,11 @@
     # TODO: Create keyword list
     # TODO: Create site list
     # TODO: Test lists for speed and accuracy
-# TODO: Tweaks
-    # TODO: ...
+# TODO: Refactoring
+    # TODO: getFileContents is just f***ing terrible -> refactor
+    # TODO: Convert functions to class methods
 
-#Note to self: It is the year of our lord 2018, it's okay to add a forloops
+#Note to self: It is the year of our lord 2018, it's okay to add some forloops
 import csv
 import time
 import urllib.request
@@ -30,15 +30,17 @@ def saveReport(returnedContentArray, folderPath):
     with open(folderPath + reportNumber + '.txt', "w") as f:
         f.write("\n".join(returnedContentArray))
 
-#Take a file path and return the contents of the file as a keyword array
+#Take a file path and return the contents of the file as a content array
 def getFileContents(filePath):
+    fileContents = []
     contentArray = []
     with open(filePath, "r") as f:
         r = csv.reader(f, delimiter = ",")
         for x in r:
-            contentArray.append(x)
-    print("Created content array: ", contentArray)
-    return contentArray[0]
+            fileContents.append(x)
+        for x in range(len(fileContents)):
+            contentArray.append(fileContents[x][0])
+    return contentArray
 
 class Scraper:
     def __init__(self, sitesFile, keywordsFile, reportPath):
@@ -46,10 +48,9 @@ class Scraper:
         self.keys = getFileContents(keywordsFile)
         self.reportPath = reportPath
         self.returnedContent = []
-
     def scrapeSites(self):
         for x in range(len(self.sites)):
-            print(self.sites[x])
+            print("Accessing site: ", self.sites[x])
             response = urllib.request.urlopen(self.sites[x])
             html = response.read()
             bfsp = BeautifulSoup(html, "html.parser")
@@ -58,6 +59,6 @@ class Scraper:
                 for y in range(len(self.keys)):
                     if url and 'html' and self.keys[y] in url:
                         self.returnedContent.append(self.sites[x] + url)
-        #print(self.returnedContent)
+        print(self.returnedContent)
         saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
