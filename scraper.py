@@ -39,6 +39,11 @@ class Scraper:
         self.returnedContent = []
 
     def scrapeSites(self):
+        #self._scrapeYahooFinance()
+        self._scrapeJobs()
+        util.saveReport(self.returnedContent, self.reportPath)
+
+    def _scrapeYahooFinance(self):
         for x in range(len(self.sites)):
             print("Accessing site: ", self.sites[x])
             response = urllib.request.urlopen(self.sites[x])
@@ -48,10 +53,8 @@ class Scraper:
                 link = tag.get('href')
                 text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
                 for y in range(len(self.keys)):
-                    #print(link, text, self.keys[y])
                     if(self.keys[y] in str(text).lower()):
                         reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
                         self.returnedContent.append(reportPiece)
 
-        util.saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
