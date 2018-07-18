@@ -19,77 +19,39 @@
     # TODO: getFileContents is just f***ing terrible
     # TODO: Convert functions to class methods
     # TODO: When reading CSV files the reader only reads the
-           #first term of each line
+           #first term of each line - fix
     # TODO: Remove rubberducky comments
 
 #Note to self: It is the year of our lord 2018, it's
 #okay to add some forloops
-
 #Just not this many...
+
 import re
-import csv
-import time
 import urllib.request
 from bs4 import BeautifulSoup
-
-#Save report to specified directory
-def saveReport(returnedContentArray, folderPath):
-    reportNumber = time.asctime(time.localtime(time.time())).replace(":", "")
-    with open(folderPath + reportNumber + '.txt', "w") as f:
-        f.write("\n".join(returnedContentArray))
-
-#Take a CSV file and return the contents of the file as a content array
-#(File must be one piece of content per line)
-def getFileContents(filePath):
-    fileContents = []
-    contentArray = []
-    with open(filePath, "r") as f:
-        r = csv.reader(f, delimiter = ",")
-        for x in r:
-            fileContents.append(x)
-        for x in range(len(fileContents)):
-            contentArray.append(fileContents[x][0])
-    return contentArray
+import util as util
 
 class Scraper:
     def __init__(self, sitesFile, keywordsFile, reportPath):
-        self.sites = getFileContents(sitesFile)
-        self.keys = getFileContents(keywordsFile)
+        self.sites = util.getFileContents(sitesFile)
+        self.keys = util.getFileContents(keywordsFile)
         self.reportPath = reportPath
         self.returnedContent = []
+
     def scrapeSites(self):
         for x in range(len(self.sites)):
-            #DBG
             print("Accessing site: ", self.sites[x])
-
-            #Make responce equal to site data
             response = urllib.request.urlopen(self.sites[x])
-
-            #Make the file into one text string for parsing
             html = response.read()
-
-            #parse the string using bfsp html parser
             bfsp = BeautifulSoup(html, "html.parser")
-
-            #For all the link tagged parts of the object do x
-            #find_all is returning an array of link tags to loop over
             for tag in bfsp.find_all('a'):
-                #print(tag)
-                #regex to select the content inbetween HTML comments
-                #this is specific to yahoo finance because all their article titles are there by react means
                 link = tag.get('href')
                 text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
-                if(text != [] and 'html' in link):
-                    print(text)
-                    reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
-                    self.returnedContent.append(reportPiece)
-                #Make a variable equal to the value of the href subtag
-                #url = tag.get('href')
+                for y in range(len(self.keys)):
+                    #print(link, text, self.keys[y])
+                    if(self.keys[y] in str(text).lower()):
+                        reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
+                        self.returnedContent.append(reportPiece)
 
-                #for all keys in the keyterm list
-                #for y in range(len(self.keys)):
-                    #pass
-
-        #print(self.returnedContent)
-        saveReport(self.returnedContent, self.reportPath)
+        util.saveReport(self.returnedContent, self.reportPath)
 Scraper("websites.csv", "keywords.csv", "reports/").scrapeSites()
