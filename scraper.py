@@ -44,19 +44,26 @@ class Scraper:
         util.saveReport(self.returnedContent, self.reportPath)
 
     def _scrapeYahooFinance(self):
-        for x in range(len(self.sites)):
-            print("Accessing site: ", self.sites[x])
-            response = urllib.request.urlopen(self.sites[x])
-            html = response.read()
-            bfsp = BeautifulSoup(html, "html.parser")
-            for tag in bfsp.find_all('a'):
-                link = tag.get('href')
-                text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
-                for y in range(len(self.keys)):
-                    if(self.keys[y] in str(text).lower()):
-                        reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
-                        self.returnedContent.append(reportPiece)
+        print("Accessing site: ", self.sites[0])
+        response = urllib.request.urlopen(self.sites[x])
+        html = response.read()
+        bfsp = BeautifulSoup(html, "html.parser")
+        for tag in bfsp.find_all('a'):
+            link = tag.get('href')
+            text = re.findall("-->([a-zA-Z].*?)<!--", str(tag))
+            for y in range(len(self.keys)):
+                if(self.keys[y] in str(text).lower()):
+                    reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
+                    self.returnedContent.append(reportPiece)
     def _scrapeJobs(self):
-        # FIXME: 
-
+        print("Accessing site: ", self.sites[x])
+        respose = urllib.request.urlopen(self.sites[0])
+        html = response.read()
+        bfsp = BeautifulSoup(html, 'html.parser')
+        for tag bfsp.find_all('-placeholder-'):  #TARGET TAG HERE
+            link = tag.get('href')
+            text = '-placeholder-'              #REGEX based on on target tag
+            for i in range(len(self.keys)):
+                if(self.keys[i] in str(text).lower())
+                    reportPiece = str(text) + "\n" +self.sites[0] + link + "\n"
 Scraper("craigslistURL.csv", "keywords.csv", "reports/").scrapeSites()
