@@ -62,7 +62,7 @@ class Scraper:
         bfsp = BeautifulSoup(html, 'html.parser')
         for tag bfsp.find_all('-placeholder-'):  #TARGET TAG HERE
             link = tag.get('href')
-            text = '-placeholder-'              #REGEX based on on target tag
+            text = '-placeholder-'              #REGEX based on target tag
             for i in range(len(self.keys)):
                 if(self.keys[i] in str(text).lower())
                     reportPiece = str(text) + "\n" +self.sites[0] + link + "\n"
