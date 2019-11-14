@@ -7,8 +7,6 @@
     # TODO: Collect headline for report as well as link
     # TODO: What if the folder path is null?
         # TODO: This may have to be site specific depending on tags used
-# TODO: Run daily
-    #...?
 # TODO: Text alert to phone on new news reports about keywords supplied
     # TODO: research texting module?
 # TODO: Create a robust site list and keyword list for testing
@@ -21,10 +19,6 @@
     # TODO: When reading CSV files the reader only reads the
            #first term of each line - fix
     # TODO: Remove rubberducky comments
-
-#Note to self: It is the year of our lord 2018, it's
-#okay to add some forloops
-#Just not this many...
 
 import re
 import urllib.request
@@ -56,13 +50,14 @@ class Scraper:
                     reportPiece = str(text) + "\n" + self.sites[x] + link + "\n\n"
                     self.returnedContent.append(reportPiece)
     def _scrapeJobs(self):
+		targetTag = '<a>'
         print("Accessing site: ", self.sites[x])
         respose = urllib.request.urlopen(self.sites[0])
         html = response.read()
         bfsp = BeautifulSoup(html, 'html.parser')
-        for tag bfsp.find_all('-placeholder-'):  #TARGET TAG HERE
+        for tag bfsp.find_all(targetTag):
             link = tag.get('href')
-            text = '-placeholder-'              #REGEX based on target tag
+            text = '-placeholder-'             
             for i in range(len(self.keys)):
                 if(self.keys[i] in str(text).lower())
                     reportPiece = str(text) + "\n" +self.sites[0] + link + "\n"
